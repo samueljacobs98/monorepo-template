@@ -1,0 +1,12 @@
+{
+  "extends": "@config/typescript/nextjs.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "types": ["jest", "node"]
+  },
+  "include": ["."],
+  "exclude": ["node_modules", "dist"]
+}

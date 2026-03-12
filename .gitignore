@@ -23,6 +23,7 @@ coverage
 
 # Build Outputs
 .next/
+next-env.d.ts
 out/
 build
 dist
@@ -34,3 +35,6 @@ npm-debug.log*
 # Misc
 .DS_Store
 *.pem
+
+# Scratchpad for agent-generated PR descriptions
+pr-description.md

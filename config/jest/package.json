@@ -1,0 +1,16 @@
+{
+  "name": "@config/jest",
+  "version": "0.0.0",
+  "dependencies": {
+    "@swc/core": "1.10.1",
+    "@swc/jest": "0.2.37"
+  },
+  "devDependencies": {
+    "jest-environment-jsdom": "^29.7.0"
+  },
+  "files": [
+    "browser/jest-preset.js",
+    "node/jest-preset.js"
+  ],
+  "private": true
+}

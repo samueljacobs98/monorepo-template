@@ -12,10 +12,10 @@
   "iconLibrary": "tabler",
   "aliases": {
     "components": "@/components",
-    "hooks": "@/hooks",
+    "hooks": "@/lib/state/hooks",
     "lib": "@/lib",
-    "utils": "@workspace/ui/lib/utils",
-    "ui": "@workspace/ui/components"
+    "utils": "@frontend/ui/lib/utils",
+    "ui": "@frontend/ui/components"
   },
   "rtl": false,
   "menuColor": "default",

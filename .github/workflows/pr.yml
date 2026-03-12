@@ -1,0 +1,121 @@
+name: Pull Request
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  merge_group:
+
+env:
+  NODE_OPTIONS: "--max-old-space-size=6144"
+  TURBO_SCM_BASE: origin/main
+
+permissions:
+  contents: read
+
+jobs:
+  manypkg:
+    name: Manypkg checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Run manypkg fix
+        run: pnpm dlx @manypkg/cli@0.25.1 fix
+
+      - uses: ./.github/actions/assert-no-git-diffs
+
+  syncpack:
+    name: Syncpack checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run syncpack fix
+        run: pnpm syncpack:fix --dependency-types prod,dev
+
+      - name: Run syncpack format
+        run: pnpm syncpack:format
+
+      - name: Update lockfile
+        run: pnpm install
+        if: success()
+
+      - uses: ./.github/actions/assert-no-git-diffs
+
+  build:
+    name: Build monorepo
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-turbo
+
+      - name: Build
+        run: pnpm build --affected --concurrency=50%
+
+      - uses: ./.github/actions/assert-no-git-diffs
+
+  lint_and_format:
+    name: Lint, Format, Typecheck
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-turbo
+
+      - name: Lint
+        run: pnpm lint --affected
+
+      - name: Format Check
+        run: pnpm format:check --affected
+
+      - name: Typecheck
+        run: pnpm typecheck --affected
+
+  test:
+    name: Test
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-turbo
+
+      - name: Test
+        run: pnpm test --affected

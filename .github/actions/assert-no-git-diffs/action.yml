@@ -1,0 +1,25 @@
+name: "Assert No Git Diffs"
+description: "Assert that the git working directory is clean"
+
+branding:
+  icon: git-branch
+  color: orange
+
+runs:
+  using: "composite"
+  steps:
+    - name: Assert that the git working directory is clean
+      shell: bash
+      run: |
+        if [ -n "$(git status --porcelain)" ]; then
+          git status
+          echo ""
+          echo "=== Staged changes (git diff --staged) ==="
+          git diff --staged
+          echo ""
+          echo "=== Unstaged changes (git diff) ==="
+          git diff
+          echo ""
+          echo "Git working directory is dirty."
+          exit 1
+        fi

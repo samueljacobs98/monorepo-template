@@ -1,0 +1,13 @@
+{
+  "extends": "@config/typescript/base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "types": ["jest", "node"]
+  },
+  "include": ["."],
+  "exclude": ["node_modules", "dist"]
+}

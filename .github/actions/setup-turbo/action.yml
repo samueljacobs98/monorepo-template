@@ -1,0 +1,39 @@
+name: "Setup Turbo"
+description: "Checkout, cache turbo, setup pnpm and Node, install dependencies"
+
+branding:
+  icon: zap
+  color: blue
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+      with:
+        filter: "blob:none"
+        fetch-depth: 0
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: Setup Node
+      id: node
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: "package.json"
+        cache: "pnpm"
+
+    - name: Cache turbo
+      uses: actions/cache@v4
+      with:
+        path: .turbo/cache
+        key: pr-${{ github.event.pull_request.number || 'merge-group' }}-${{ runner.os }}-node${{ steps.node.outputs.node-version }}-turbo-${{ hashFiles('pnpm-lock.yaml', 'pnpm-workspace.yaml', 'package.json', 'turbo.json', '.npmrc') }}
+        restore-keys: |
+          pr-${{ github.event.pull_request.number || 'merge-group' }}-${{ runner.os }}-node${{ steps.node.outputs.node-version }}-turbo-
+          ${{ runner.os }}-node${{ steps.node.outputs.node-version }}-turbo-
+          ${{ runner.os }}-turbo-
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile

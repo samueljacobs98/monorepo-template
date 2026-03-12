@@ -1,0 +1,28 @@
+{
+  "name": "@repo/route-matcher",
+  "version": "0.0.0",
+  "dependencies": {
+    "next": "16.1.6",
+    "path-to-regexp": "^8.3.0"
+  },
+  "devDependencies": {
+    "@config/eslint": "workspace:*",
+    "@config/jest": "workspace:*",
+    "@config/typescript": "workspace:*",
+    "@types/jest": "^30.0.0",
+    "eslint": "^9.39.2",
+    "jest": "^30.2.0",
+    "typescript": "^5.9.3"
+  },
+  "exports": {
+    ".": "src/index.ts"
+  },
+  "jest": {
+    "preset": "@config/jest/node"
+  },
+  "private": true,
+  "scripts": {
+    "lint": "eslint . --max-warnings 0"
+  },
+  "type": "module"
+}
