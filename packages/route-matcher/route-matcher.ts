@@ -45,23 +45,38 @@ export type RouteMatcherParam =
   | RouteMatcherWithNextTypedRoutes
   | ((req: NextRequest) => boolean);
 
+export type RouteMatcher = {
+  request: (req: NextRequest) => boolean;
+  path: (pathname: string) => boolean;
+};
+
 /**
- * Returns a function that accepts a `Request` object and returns whether the request matches the list of
- * predefined routes that can be passed in as the first argument.
+ * Returns a RouteMatcher object that can match against NextRequests or pathnames.
+ * The matcher checks whether the request/path matches the list of predefined routes
+ * passed in as the first argument.
  *
  * You can use glob patterns to match multiple routes or a function to match against the request object.
  * Path patterns and limited regular expressions are supported.
  * For more information, see: https://www.npmjs.com/package/path-to-regexp/v/6.3.0
  */
-export const createRouteMatcher = (routes: RouteMatcherParam) => {
+export const createRouteMatcher = (routes: RouteMatcherParam): RouteMatcher => {
   if (typeof routes === "function") {
-    return (req: NextRequest) => routes(req);
+    return {
+      request: (req: NextRequest) => routes(req),
+      path: (pathname: string) => routes({ nextUrl: { pathname } } as NextRequest),
+    };
   }
 
   const routePatterns = [routes || ""].flat().filter(Boolean);
   const matchers = precomputePathRegex(routePatterns);
-  return (req: NextRequest) =>
-    matchers.some((matcher) => matcher.test(req.nextUrl.pathname));
+
+  const path = (pathname: string): boolean =>
+    matchers.some((matcher) => matcher.test(pathname));
+
+  return {
+    request: (req: NextRequest) => path(req.nextUrl.pathname),
+    path,
+  };
 };
 
 const precomputePathRegex = (patterns: Array<string | RegExp>) => {
