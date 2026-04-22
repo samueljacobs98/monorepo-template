@@ -1,5 +1,6 @@
 import z from "zod";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type Config = {};
 
 const configSchema = z.object({}).strict();
