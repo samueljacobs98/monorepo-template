@@ -3,7 +3,7 @@ import { type ReactNode, Suspense } from "react";
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import {
   ErrorBoundary,
-  FallbackProps as ErrorFallbackProps,
+  type FallbackProps as ErrorFallbackProps,
 } from "react-error-boundary";
 
 export function FeatureBoundary({
