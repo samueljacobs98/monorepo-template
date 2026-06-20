@@ -1,1 +1,2 @@
-export * from "./app-provider";
+export * from "./query-client-provider";
+export * from "./theme-provider";

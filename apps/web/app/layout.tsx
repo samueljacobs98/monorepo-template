@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import { Geist_Mono, Public_Sans } from "next/font/google";
 import "@frontend/ui/globals.css";
 import { cn } from "@frontend/ui/lib/utils";
-import { AppProvider } from "@/lib/state/providers";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { QueryClientProvider, ThemeProvider } from "@/lib/state/providers";
 
 const publicSans = Public_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -28,7 +29,11 @@ export default function RootLayout({
       )}
     >
       <body>
-        <AppProvider>{children}</AppProvider>
+        <QueryClientProvider>
+          <NuqsAdapter>
+            <ThemeProvider>{children}</ThemeProvider>
+          </NuqsAdapter>
+        </QueryClientProvider>
       </body>
     </html>
   );
