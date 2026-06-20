@@ -1,4 +1,4 @@
 {
   "tailwindCSS.experimental.configFile": "packages/ui/src/styles/globals.css",
-  "cSpell.words": ["nuqs"]
+  "cSpell.words": ["nuqs", "luxon", "datetimes"]
 }
