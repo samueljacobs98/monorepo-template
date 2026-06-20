@@ -35,7 +35,6 @@ describe("action", () => {
     const schema = z.object({ count: z.coerce.number() });
     const run = action(schema, async (data) => ok({ double: data.count * 2 }));
 
-    // @ts-expect-error - test invalid shape
     const result = await run({ count: "42" });
 
     expect(result).toEqual({ double: 84 });
