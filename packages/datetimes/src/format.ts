@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { err, ok, Result } from "@repo/result";
+import { err, ok, type Result } from "@repo/result";
 
 export const DatetimeFormat = {
   Date: "Date", // "14 Mar 2026"

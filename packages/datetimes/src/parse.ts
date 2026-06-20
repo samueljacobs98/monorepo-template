@@ -1,5 +1,5 @@
 import { DateTime as LuxonDateTime } from "luxon";
-import { err, ok, Result } from "@repo/result";
+import { err, ok, type Result } from "@repo/result";
 import type { DateTime } from "./types";
 
 type Options = Parameters<typeof LuxonDateTime.fromISO>[1];
